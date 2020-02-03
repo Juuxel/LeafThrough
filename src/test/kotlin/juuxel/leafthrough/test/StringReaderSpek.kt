@@ -201,5 +201,22 @@ class StringReaderSpek : Spek({
                     .isEqualTo(reader.source.indexOf('(') + 1)
             }
         }
+
+        Scenario("reading while a predicate is true") {
+            lateinit var result: String
+            When("the string is read while the current character is a letter") {
+                result = reader.readWhile { it.isLetter() }
+            }
+
+            Then("the result should be 'hello'") {
+                expectThat(result).isEqualTo("hello")
+            }
+
+            Then("the cursor should have moved five positions") {
+                expectThat(reader)
+                    .get("cursor") { cursor }
+                    .isEqualTo(5)
+            }
+        }
     }
 })

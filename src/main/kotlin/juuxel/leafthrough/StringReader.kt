@@ -151,6 +151,26 @@ class StringReader(val source: String) {
     }
 
     /**
+     * Reads all characters starting from the [next] character while the [predicate] returns true.
+     *
+     * @throws IllegalStateException if this reader cannot read any characters
+     */
+    fun readWhile(predicate: (current: Char) -> Boolean): String {
+        throwIfFinished()
+
+        val builder = StringBuilder()
+        var current = next()
+
+        while (predicate(current) && hasNext()) {
+            builder.append(current)
+            current = next()
+        }
+        cursor-- // move back the cursor by one unit
+
+        return builder.toString()
+    }
+
+    /**
      * Resets the [cursor] to zero.
      */
     fun reset() {
