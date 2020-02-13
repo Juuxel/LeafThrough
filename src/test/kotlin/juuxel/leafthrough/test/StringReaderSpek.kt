@@ -218,5 +218,16 @@ class StringReaderSpek : Spek({
                     .isEqualTo(5)
             }
         }
+
+        Scenario("readWhile { true }") {
+            lateinit var result: String
+            When("the string is read while { true } is true (always)") {
+                result = reader.readWhile { true }
+            }
+
+            Then("the result should be the source") {
+                expectThat(result).isEqualTo(reader.source)
+            }
+        }
     }
 })

@@ -159,12 +159,16 @@ class StringReader(val source: String) {
         throwIfFinished()
 
         val builder = StringBuilder()
-        var current = next()
 
-        while (predicate(current) && hasNext()) {
-            builder.append(current)
-            current = next()
-        }
+        do {
+            val current = next()
+            if (predicate(current)) {
+                builder.append(current)
+            } else {
+                break
+            }
+        } while (hasNext())
+
         cursor-- // move back the cursor by one unit
 
         return builder.toString()
