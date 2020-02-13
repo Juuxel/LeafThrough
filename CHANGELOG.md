@@ -7,6 +7,9 @@ Using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 - `StringReader.getRemaining()`
   - Gets everything in the string after the cursor.
 
+### Fixed
+- Cursor offsets when using `readWhile()`.
+
 ## [1.1.0] - 2020-02-03
 ### Added
 - `StringReader.readWhile((Char) -> Boolean)`
