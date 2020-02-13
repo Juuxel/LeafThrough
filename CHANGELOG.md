@@ -2,6 +2,11 @@
 
 Using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
+## [1.2.0] - 2020-02-13
+### Added
+- `StringReader.getRemaining()`
+  - Gets everything in the string after the cursor.
+
 ## [1.1.0] - 2020-02-03
 ### Added
 - `StringReader.readWhile((Char) -> Boolean)`

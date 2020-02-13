@@ -161,18 +161,28 @@ class StringReader(val source: String) {
         val builder = StringBuilder()
 
         do {
-            val current = next()
+            val current = peek()
             if (predicate(current)) {
+                next() // Move the cursor
                 builder.append(current)
             } else {
                 break
             }
         } while (hasNext())
 
-        cursor-- // move back the cursor by one unit
-
         return builder.toString()
     }
+
+    /**
+     * Reads all characters that are left in the reader.
+     * Does not move the cursor.
+     *
+     * @throws NoSuchElementException if there are no characters remaining
+     * @since 1.2.0
+     */
+    fun getRemaining(): String =
+        if (hasNext()) source.substring(cursor)
+        else throw NoSuchElementException("No characters remaining!")
 
     /**
      * Resets the [cursor] to zero.

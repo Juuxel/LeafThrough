@@ -5,6 +5,7 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFalse
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 
@@ -227,6 +228,47 @@ class StringReaderSpek : Spek({
 
             Then("the result should be the source") {
                 expectThat(result).isEqualTo(reader.source)
+            }
+
+            Then("there should be no characters remaining") {
+                expectThat(reader).get("has remaining characters") { hasNext() }.isFalse()
+            }
+        }
+
+        Scenario("reading the remaining characters after initial reading") {
+            lateinit var result: String
+            When("the remaining string is read") {
+                reader.next(4) // read 'hello'
+                result = reader.getRemaining()
+            }
+
+            Then("the result should be the end of the source") {
+                expectThat(result).isEqualTo(reader.source.substringAfter("hello"))
+            }
+        }
+
+        Scenario("reading the entire string as remaining characters") {
+            lateinit var result: String
+            When("the remaining string is read") {
+                result = reader.getRemaining()
+            }
+
+            Then("the result should be the source") {
+                expectThat(result).isEqualTo(reader.source)
+            }
+        }
+
+        Scenario("reading the entire string when no characters are left") {
+            var result: Result<String>? = null
+            When("the remaining string is read") {
+                reader.cursor = reader.source.length // clear the reader
+                result = runCatching { reader.getRemaining() }
+            }
+
+            Then("the result should be a failure") {
+                expectThat(result)
+                    .isNotNull()
+                    .assertThat("is failure") { it.isFailure }
             }
         }
     }
