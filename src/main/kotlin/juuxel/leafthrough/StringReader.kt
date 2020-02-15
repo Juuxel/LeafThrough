@@ -5,10 +5,15 @@ package juuxel.leafthrough
  * single chars.
  *
  * Inspired by the `StringReader` found in [Brigadier](https://github.com/Mojang/brigadier).
- *
- * @property source the source string to read from
  */
-class StringReader(val source: String) {
+class StringReader(source: String) {
+    /**
+     * The source string to read from.
+     * The source can be changed using [resetTo].
+     */
+    var source: String = source
+        private set
+
     /**
      * The cursor represents the next character that will be read.
      * Starts from zero.
@@ -116,6 +121,18 @@ class StringReader(val source: String) {
     }
 
     /**
+     * Expects the source to have [text] right after the cursor. If not, throws an [IllegalStateException].
+     * Moves the cursor forward.
+     *
+     * @since 1.3.0
+     */
+    fun expect(text: String) {
+        for (character in text) {
+            expect(character, peek = false)
+        }
+    }
+
+    /**
      * Reads until the [char] is encountered and returns the read characters.
      *
      * @param inclusive true if the last character should be read and included in the result
@@ -129,8 +146,15 @@ class StringReader(val source: String) {
         val builder = StringBuilder()
 
         if (peek() == char) {
-            if (!peek) next()
-            return if (inclusive) "$char" else ""
+            return if (inclusive) {
+                if (!peek) {
+                    next()
+                }
+
+                "$char"
+            } else {
+                ""
+            }
         }
 
         var i = 0
@@ -189,6 +213,17 @@ class StringReader(val source: String) {
      */
     fun reset() {
         cursor = 0
+    }
+
+    /**
+     * Changes the source to [source] and resets the [cursor] to zero.
+     *
+     * @since 1.3.0
+     */
+    fun resetTo(source: String) {
+        require(source.isNotEmpty()) { "The source must not be empty!" }
+        this.source = source
+        reset()
     }
 
     override fun toString() = "StringReader(source=$source, cursor=$cursor)"
