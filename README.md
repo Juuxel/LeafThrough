@@ -16,19 +16,17 @@ hello.expect('(') // throws if the next character is not '('
 
 ## Usage
 
-You can get it from either [Jitpack](https://jitpack.io)
-or the [CottonMC repository](http://server.bbkr.space:8081/artifactory/webapp/).
+You can get it from my Bintray repository (might be on JCenter in the future).
 
 Gradle:
 ```kotlin
 repositories {
     maven {
-        name = "Cotton"
-        url = uri("http://server.bbkr.space:8081/artifactory/libs-release")
+        url = uri("https://dl.bintray.com/juuxel/maven")
     }
 }
 
 dependencies {
-    implementation("io.github.juuxel:leaf-through:1.0.0")
+    implementation("io.github.juuxel:leaf-through:1.3.1")
 }
 ```
