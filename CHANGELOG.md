@@ -2,6 +2,11 @@
 
 Using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
+## [1.3.2] - 2021-01-12
+
+### Fixed
+- `StringReader.readWhile` crashing when the cursor was at the end of the source.
+
 ## [1.3.1] - 2021-01-08
 
 ### Changed

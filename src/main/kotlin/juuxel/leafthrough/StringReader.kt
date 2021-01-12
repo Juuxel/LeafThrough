@@ -141,9 +141,6 @@ class StringReader(source: String) {
      */
     fun readUntil(char: Char, inclusive: Boolean = false, peek: Boolean = false): String {
         throwIfFinished()
-        fun read(c: Int) = if (peek) peek(c) else next()
-
-        val builder = StringBuilder()
 
         if (peek() == char) {
             return if (inclusive) {
@@ -157,21 +154,35 @@ class StringReader(source: String) {
             }
         }
 
-        var i = 0
-        var current = read(i++)
+        val result = buildString {
+            var i = 0
 
-        while (current != char && hasNext()) {
-            builder.append(current)
-            current = read(i++)
+            while (true) {
+                val current = peek(i)
+
+                if (current != char) {
+                    append(current)
+
+                    if (hasNext(i + 1)) {
+                        i++
+                    } else {
+                        break
+                    }
+                } else {
+                    if (inclusive) {
+                        append(current)
+                    }
+
+                    break
+                }
+            }
         }
 
-        if (inclusive) {
-            builder.append(current)
-        } else if (!peek) { // move cursor backwards
-            cursor--
+        if (!peek) {
+            cursor += result.length
         }
 
-        return builder.toString()
+        return result
     }
 
     /**

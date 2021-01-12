@@ -203,6 +203,38 @@ class StringReaderSpek : Spek({
             }
         }
 
+        Scenario("reading until a character from an ending string") {
+            lateinit var result: String
+            When("the string is read until '!'") {
+                result = reader.readUntil('!')
+            }
+
+            Then("the result should be the entire source") {
+                expectThat(result).isEqualTo(reader.source)
+            }
+
+            Then("there should be no characters to read") {
+                expectThat(reader).get("has next character", StringReader::hasNext).isFalse()
+            }
+        }
+
+        Scenario("peeking until a character from an ending string") {
+            lateinit var result: String
+            When("the string is read until '!'") {
+                result = reader.readUntil('!', peek = true)
+            }
+
+            Then("the result should be the entire source") {
+                expectThat(result).isEqualTo(reader.source)
+            }
+
+            Then("the cursor should be at the start") {
+                expectThat(reader)
+                    .get("cursor") { cursor }
+                    .isEqualTo(0)
+            }
+        }
+
         Scenario("reading while a predicate is true") {
             lateinit var result: String
             When("the string is read while the current character is a letter") {
