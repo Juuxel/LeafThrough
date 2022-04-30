@@ -6,6 +6,7 @@ Using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ### Changed
 - Updated to Kotlin 1.6.21.
+- Now compiles to Java 8 bytecode.
 
 ## [1.3.2] - 2021-01-12
 

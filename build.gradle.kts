@@ -1,4 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
@@ -36,6 +37,12 @@ if (file("private.gradle").exists()) {
 }
 
 tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
     jar {
         from("LICENSE")
     }
