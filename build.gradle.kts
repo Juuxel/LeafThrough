@@ -3,6 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     `java-library`
     `maven-publish`
+    signing
 
     kotlin("jvm") version "1.6.21"
     id("org.jetbrains.dokka") version "1.6.21"
@@ -55,5 +56,46 @@ tasks {
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
+
+        pom {
+            name.set("Leaf Through")
+            description.set("A small string reading library for Kotlin")
+            url.set("https://github.com/Juuxel/LeafThrough")
+
+            licenses {
+                license {
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("Juuxel")
+                    name.set("Juuxel")
+                    email.set("juuzsmods@gmail.com")
+                }
+            }
+
+            scm {
+                connection.set("scm:git:git://github.com/Juuxel/LeafThrough.git")
+                developerConnection.set("scm:git:ssh://github.com/Juuxel/LeafThrough.git")
+                url.set("https://github.com/Juuxel/LeafThrough")
+            }
+        }
+
+        repositories {
+            maven {
+                name = "ossrh"
+                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials(PasswordCredentials::class)
+            }
+        }
+    }
+}
+
+if (project.hasProperty("signing.keyId")) {
+    signing {
+        sign(publishing.publications)
     }
 }
