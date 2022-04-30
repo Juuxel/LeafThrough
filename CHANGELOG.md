@@ -2,6 +2,11 @@
 
 Using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
+## [1.3.3] - 2022-04-30
+
+### Changed
+- Updated to Kotlin 1.6.21.
+
 ## [1.3.2] - 2021-01-12
 
 ### Fixed
