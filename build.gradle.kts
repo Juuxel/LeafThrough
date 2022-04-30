@@ -36,6 +36,13 @@ if (file("private.gradle").exists()) {
     apply(from = "private.gradle")
 }
 
+val javadocJar = tasks.register<Jar>("javadocJar") {
+    val dokkaHtml = tasks.getByName<DokkaTask>("dokkaHtml")
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.outputDirectory)
+}
+
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
@@ -58,11 +65,16 @@ tasks {
             includeEngines("spek2")
         }
     }
+
+    assemble {
+        dependsOn(javadocJar)
+    }
 }
 
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
+        artifact(javadocJar)
 
         pom {
             name.set("Leaf Through")
